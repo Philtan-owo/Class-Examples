@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Twitter API example</title>
+  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+  <script type="text/javascript" charset="utf-8">
+  /**
+   *  This is an example script demonstrating the use of the Twitter API version 1 with jQuery.
+   *  PLEASE NOTE: Twitter will be deprecating this API version soon. All endpoints under the
+   *  new API will need to be authenticated via server-side language first.
+   *
+   *  Find the endpoint you wish to use, and set it here. https://dev.twitter.com/docs/api/1
+   */
+   
+   var endpoint = "http://search.twitter.com/search.json?geocode=37.871593,-122.272747,2mi&locale=en&result_type=recent";
+   
+    jQuery(document).ready(function($){
+
+        $.ajax({
+          url       : endpoint,
+          dataType  : 'jsonp',
+          success   : function(data){processData(data);},
+          error     : function(data){if(window.console && window.console.log) window.console.log("Error: " + err.statusText);}
+        });
+        
+        /**
+         * This is the function that runs after data is loaded from Twitter.
+         * You should write your code to the DOM using .html() or .append() The
+         * html method will replace content, while append will preserve content.
+         *
+         * @param {object} data The JSON data that was retrived.
+         */
+        function processData(data){
+          for(var i=0; i < data["results"].length; i++){
+            
+            //set profile image
+            var profile_image = $('<img />').attr('src', data["results"][i]["profile_image_url"]).css({'float':'left', 'margin-right': '4px'});
+            
+            //set user name
+            var user_name = $('<h2 />').html(data['results'][i]['from_user']);
+            
+            //set tweet
+            var tweet = $('<p />').html(data["results"][i]["text"].linkify_tweet());
+            
+            //append all to DOM
+            $('body').append(
+              $('<div />')
+                .append(profile_image)
+                .append(user_name)
+                .append(tweet)
+            );
+            
+          }
+        }
+        
+
+    });
+    
+    String.prototype.linkify_tweet = function() {
+  	   var tweet = this.replace(/(\b(https?):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/i, '<a href="$1" target="_blank">$1</a>');
+  	   tweet = tweet.replace(/(^|\s)@(\w+)/g, '$1@<a href="http://www.twitter.com/$2">$2</a>');
+  	   return tweet.replace(/(^|\s)#(\w+)/g, '$1<a href="http://search.twitter.com/search?q=%23$2" target="_blank">#$2</a>');
+  	 };
+  </script>
+</head>
+<body>
+  
+</body>
+</html>
