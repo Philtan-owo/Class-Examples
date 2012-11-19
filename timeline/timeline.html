@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Timeline Example</title>
+  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+  <link rel="stylesheet" type="text/css" href="style.css?7" />
+  <script type="text/javascript" charset="utf-8">
+  
+    //http://www.flickr.com/photos/nasamarshall/sets/72157631505799704/with/7973856934/
+    var timeline = 
+      {
+        "title"       : "Apollo 11 Moon Landing Timeline",
+        "description" : "This collection of historical photos from the Apollo 11 mission to the moon. Image Credits: NASA",
+        "items"       : [
+            {
+              "date"        : new Date("July 16, 1969 08:00:00"),
+              "description" : "Neil Armstrong waves as he heads to the launch pad for the Apollo 11 mission with fellow crew members Michael Collins and Buzz Aldrin.",
+              "photourl"    : "http://farm9.staticflickr.com/8181/7973918218_383599b4a8_c.jpg"
+            },
+            {
+              "date"        : new Date("July 16, 1969 08:00:05"),
+              "description" : "Liftoff of Apollo 11.",
+              "photourl"    : "http://farm9.staticflickr.com/8439/7974017838_d4afc92126_c.jpg"
+            },
+            {
+              "date"        : new Date("July 16, 1969 08:00:10"),
+              "description" : "The Earth photographed by the Apollo 11 crew on their first day in orbit.",
+              "photourl"    : "http://farm9.staticflickr.com/8453/7973888672_c2cd7baa68_c.jpg"
+            },
+            {
+              "date"        : new Date("July 20, 1969"),
+              "description" : "Crater 308 viewed as Apollo 11 astronauts orbited the moon.",
+              "photourl"    : "http://farm9.staticflickr.com/8451/7973856934_020c6fc324_b.jpg"
+            },
+            {
+              "date"        : new Date("July 20, 1969 "),
+              "description" : "Views outside Neil Armstrong’s window just after landing on the lunar surface.",
+              "photourl"    : "http://farm9.staticflickr.com/8029/7973842428_0966f78699_c.jpg"
+            },
+            {
+              "date"        : new Date("July 21, 1969 03:02:53"),
+              "description" : "Footprints on the moon, after the first lunar visit.",
+              "photourl"    : "http://farm9.staticflickr.com/8316/7973793970_59f2a6ace9_c.jpg"
+            },
+            {
+              "date"        : new Date("July 24, 1969 17:00:00"),
+              "description" : "Apollo 11 crew and a Navy diver await pickup after splashdown.",
+              "photourl"    : "http://farm9.staticflickr.com/8040/7973476880_3f79c93e8e_c.jpg"
+            }
+
+       ]
+    };
+
+    jQuery(document).ready(function($){
+        var cp = 0;
+        
+        $('#filmstrip h1').html(timeline['title']);
+        $('#filmstrip h3').html(timeline['description']);
+        $('#filmstrip').css({'width': ((timeline['items'].length + 1) * 620) + 'px'});
+        
+        //sort lowest to highest
+        var dates = timeline['items'].sort(function(a, b){ return a.date.getTime() - b.date.getTime()})
+        var range = dates[dates.length - 1].date.getTime() - dates[0].date.getTime();
+        var timelinewidth = $('#timeline').width() - 13;
+        var offset = 0;
+        var cwid = $('#container').width();
+
+        /**
+         * Adds the photos to the filmstrip div.
+         *
+         */
+        for(var i=0; i < dates.length; i++){
+          
+          //setup the image. Negative margins so the image is centered.
+          var image = $('<img />')
+            .attr('src', dates[i]['photourl'])
+            .attr('alt', dates[i]['description'])
+            .css({'position':'absolute', 'top':'50%', 'left':'50%'})
+            .load(function(){
+              $(this).attr('width', cwid)
+                     .attr('height', this.height * cwid/this.width);
+              $(this).css({'margin-top': '-' + (this.height * cwid/this.width)/2 + 'px', 'margin-left': '-' + cwid/2 + 'px'})
+            });
+            
+          var item = $('<div />')
+              .append(image)
+              .append($('<p />').addClass('caption').html(dates[i]['description']))
+              .addClass('image');
+          $('#filmstrip').append(item);
+          
+          //attach dots to timeline. Start earliest item on zero
+          $('#timeline').append(
+            $('<div />')
+              .addClass('dot')
+              .css({'left': (((dates[i].date.getTime() - dates[0].date.getTime()) * timelinewidth) / range) + offset + 'px', 'z-index':100+i})
+          );
+          
+          //if the next dot is too close (or has same value) add some offset pixels
+          if(typeof dates[i+1] !== 'undefined'){
+            if(dates[i+1].date.getTime() - dates[i].date.getTime() <= range * 12 / timelinewidth){
+              offset += 8;
+            } else {
+              offset = 0;
+            }
+          } else {
+            offset = 0;
+          }
+          
+        }
+        
+        $('#next').click(function(){
+          cp -= 620;
+          cp = checkboundries(cp);
+          $('#filmstrip').stop().animate({left: cp}, 500);
+        });
+        
+        $('#prev').click(function(){
+          cp += 620;
+          cp = checkboundries(cp);
+          $('#filmstrip').stop().animate({left: cp}, 500);
+        });
+        
+        /**
+         * A function that checks to see if we've reached the last slide,
+         * or the first slide. If so, it hide the nav arrows, and resets
+         * cp (Current Photo) variable.
+         *
+         * @param {Number} pos The current value of the cp variable passed in
+         * @return {Number} Returns new value to assign cp variable
+         */
+        function checkboundries(pos){
+          $('#nav div').css({'display':'block'});
+          if(pos <= 0 - (dates.length * 620)){
+            $('#next').css({'display':'none'});
+            pos = 0 - (dates.length * 620);
+          }
+          if(pos >= 0){
+            $('#prev').css({'display':'none'});
+            pos = 0;
+          }
+          return pos;
+        }
+
+    });
+  </script>
+</head>
+<body>
+  <div id="container">
+    <div id="filmstrip">
+      <div class="image"><h1>Title Here</h1><h3>Description here</h3></div>
+    </div>
+    <div id="nav">
+      <div id="prev">prev</div>
+      <div id="next">next</div>
+    </div>
+  </div>
+  <div id="timeline">
+    
+  </div>
+</body>
+</html>

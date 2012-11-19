@@ -1,0 +1,126 @@
+html,body,div,span,object,iframe,h1,h2,h3,p,blockquote,a,img,small,strike,strong,b,u,i,center,ul,li,form,label,table,tbody,tfoot,thead,tr,th,td,embed,audio,video {margin: 0;padding: 0;border: 0;font-size: 100%;font: inherit;vertical-align: baseline;}
+body{line-height: 1;}
+ol,ul{list-style: none;}
+blockquote,q{quotes: none;}
+table{border-collapse:collapse;border-spacing:0;}
+
+#container{
+	position: relative;
+	max-width: 620px;
+	width: 100%;
+	height: 350px;
+	overflow: hidden;
+	border: 1px solid #999;
+}
+
+#filmstrip {
+	/* width: 1861px; */
+	position: absolute;
+	left: 0px;
+	top: 0px;
+}
+
+.image{
+	position: relative;
+	float: left;
+	max-width: 620px;
+	width: 100%;
+	height: 350px;
+	overflow: hidden;
+}
+
+h1{
+	font: bold 2em/1.5em Cambria, Georgia, Times, "Times New Roman", serif;
+	text-align: center;
+	margin: 20% 0 0 0;
+}
+h2,h3{
+	font: normal 1em/1.5em Garamond, "Hoefler Text", Palatino, "Palatino Linotype", serif;
+	width: 70%;
+	margin: 0 auto;
+}
+
+.caption{
+	position: absolute;
+	width: 90%;
+	bottom: 20px;
+	left: 0px;
+	color: white;
+	z-index: 100;
+	background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAA9JREFUeNpiYGBg2A8QYAAAxADAUq3SBwAAAABJRU5ErkJggg==);
+	font: normal 0.8em/1.5em Geneva, "Lucida Sans", "Lucida Grande", "Lucida Sans Unicode", Verdana, sans-serif;
+	padding: 10px;
+}
+
+#prev, #next{
+	background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACEAAAAfCAYAAABplKSyAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAABTtJREFUeNqsV1tIpGUYfsfDjOfzIUzEM1l4iOjCMsH1EAlCFAvmanXVRV1VhIl6UYl4413hhRd7UYHEBCMluiJC6WiwYWvi7hKIqTeO5/Np1Ol5PuYbpmnG+We3D17+mf//v/d9vuc9/iYJbZVGREQ0JicnlyUmJpZER0enh4WFma+vr53n5+fb+/v7j3d2dv50Op338O7vRpWaDL53Ozc394OcnJxbGRkZYTAuACPh4eFiMpnE5XLJ1dWVXF5eytnZmWxtbcnq6urU0tLSd9h7F+J8GhBV2dnZX5SXl9/KzMxUxo6OjpQxnF79p3CBESUEFxsbqwBubm7KwsLCo+Xl5Y/xyr2QQUBhV2Vl5VfFxcVycXEhBwcHyjCVB1tkhYDi4uIkJiZGwIjMzMwMQM+HhkFERUV9W1NT0wrqZXt7Wxmn0lAX99FdqampgniRiYkJ2/Hx8Vt45PJ+7z/HioyMvNvQ0PBuUlKSopNKuDT1oYheh4eHEh8fL4ir59bW1koRuFZvIL4g7lRXV3+J6FcM8PRPYtxXeBAwoGIFsVWCGLnE/V/9gciB/8cKCwvNgQBQGU6hop/P4Tblf6NATk5OJCUlhXtfczgcP8Hmuoo/jQBp1wUQsfSd9qevEAADE6mqgnV9fV1lg793/QnX7u6u5OfnR6LO9HmSwH3Nz8vLe48KUXQCKmGMZGVlic1mk4GBAZWu8HFIQHgQXgsKCl6H3Zc9IHC6O+np6WYqJXWBFDDlFhcXZXZ2VioqKmRoaEhRjMJkGAj1Mz4Yd3BnqwZhSktLe4P+JQv0cSAxm83qJG1tbWK32xUQq9WqlK6srChX3bRfC11JXbQL+xaCyEXUVugiE4zKhIQEFZCtra0yPT2tgAwPDytGCMQoI6y6sFsEs2UEUQKl0az5N7nCG4ibSmlpaZGpqSlBWZeRkREFBOmnMieYHtpjNcV6niCeIXoiM0KlppNALBaLNDc3KyClpaUyOjqqFDPDjOhh2kIyCMKiu2AoQiAsx6yEKHAKQFlZmQwODiq3GNHBg8O2JQIgznVX1LlsdBE8U7S2tlaKiorUvfHxcdacoLr4nEBonyDW6R+WVPfN4EMIaKQL5+bmpK6uTrHA1d3dLf39/cLOG0wX44bxhbVJd/yF+nBkJCi1EAQBkAENoKurS3p6etikDNcL1iWsR2Tib+T5A/i4yrf7+VtkYH5+Xurr62VsbEzd6+zslN7eXsUAT2iEUb6D7voYPx8SxCVSaxyoqhjZwRSwXzQ1NanawNXR0SF9fX2CxqcAML6CLRY1FjjY5SkOde/4AY3l2IhLMMhKe3u7xwUEgL7jYcCoO/f29vi+9V+TFR58je74EXP/JjZY2kk7U3NyclK1ZgxCQd3ozQL1I41tYO1tJor3eFcId9zHYJvkzt+AMcF5ghnF4VfPHaFkFVx6hpn1Fdz6w3eo2UHKOKDwTR0b/oYT3idbTOlQxz4CoBvg+s+w1eZvsiIrD05PT5/F6V7SBef/GO80g0zJjY2NH/H3cyZIwEGX3weI2mxcX2ST0sH6NPMlXUYAcCNP/z7k1Dsew/18AhDhz/C5A7HRiKAzMZhCBaKrIvexocENvbj1KVPSPce4bmJCr/uIkd/gnjQoLdSffb69wzvo9FUbx176/xcc6BM8+gZy4T6oy+hnoCpkkARII0C8g2moDi6KISB3G/Z8i2phZqH6wu6ZHb+/x15O1Vte+p7og5jUsSVyAuEE9ioMvwBWCnDiVPw2w7gTsgujS7iyFNvd6bfvRX3APP5HgAEAwJPrpuHZFQ0AAAAASUVORK5CYII=);
+	background-repeat: no-repeat;
+	background-position: left top;
+	position: absolute;
+	width: 33px;
+	height: 31px;
+	top: 45%;
+	text-indent: -9000em;
+	opacity: 0.7;
+	filter: alpha(opacity = 70);
+	cursor: pointer;
+}
+#prev:hover, #next:hover{
+	opacity: 1;
+	filter: alpha(opacity = 100);
+}
+#prev{
+	left: 5px;
+	-webkit-transform:scaleX(-1);
+	-moz-transform:scaleX(-1);
+	-ms-transform:scaleX(-1);
+	-o-transform:scaleX(-1);
+	transform:scaleX(-1);
+	display: none;
+}
+#next{
+	right: 5px;;
+}
+
+#timeline{
+	position: relative;
+	max-width: 620px;
+	width: 100%;
+	height: 25px;
+	margin: 0;
+	filter:  progid:DXImageTransform.Microsoft.gradient(startColorstr='#eeeeee', endColorstr='#bbbbbb'); /* ie7 */
+	-ms-filter:  progid:DXImageTransform.Microsoft.gradient(startColorstr='#eeeeee', endColorstr='#bbbbbb'); /* ie8 */
+	background-image: -webkit-gradient(linear, left top, left bottom, from(#eeeeee), to(#bbbbbb));
+	background-image: -moz-linear-gradient(top, #eeeeee 0%, #bbbbbb 100%);
+	-webkit-border-radius: 2px;
+	-moz-border-radius: 0.5em;
+	border-radius: 3px;
+	border: 1px solid #333;
+}
+
+.dot{
+	position: absolute;
+	top: 6px;
+	left: 0;
+	height: 10px;
+	width: 10px;
+	background: #fff;
+	
+	-moz-box-shadow:    inset 0 0 10px #000000;
+	-webkit-box-shadow: inset 0 0 10px #000000;
+	box-shadow:         inset 0 0 10px #000000;
+	
+	-moz-border-radius:5px; /* Firefox */
+	-webkit-border-radius:5px; /* Safari, Chrome */
+	-khtml-border-radius: 5px; /* linux browsers */
+	border-radius: 5px; /* CSS3 standard */
+	behavior: url(border-radius.htc); /* old IE */
+	
+	border: 1px solid #333;
+	display: inline-block;
+	margin: 0;
+	zoom: 1;
+}
+.current{
+	background: #333;
+}
