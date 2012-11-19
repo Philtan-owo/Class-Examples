@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>Bar Chart</title>
+	<style>
+		/* Reset styles */
+		html, body, div, p, table {margin: 0;padding: 0;border: 0;font-size: 100%;font: inherit;vertical-align: baseline;}
+		body {line-height: 1;}
+		table {font-family:"Lucida Sans Unicode", "Lucida Grande", Sans-Serif;font-size:12px;width:100%;text-align:left;border-collapse:collapse;border-spacing: 0;}
+		td:first-child{width:60%;}
+		tr:hover td{color:#339;background:#d0dafd;}
+		td{color:#669;padding:3px 10px;}
+	</style>
+	
+	<!-- Hotlink TableTop.js (don't do this for production) https://github.com/jsoma/tabletop -->
+	<script type="text/javascript" src="https://raw.github.com/jsoma/tabletop/master/src/tabletop.js" charset="utf-8"></script>
+	
+	<script>
+
+	/**
+	 * Set your Google Drive spreadsheet URL here. The spreadsheet URL needs to be 
+	 * the public-facing URL you get when you click File --> Publish on Google Docs.
+	 */
+	var public_spreadsheet_url = '';
+
+  /**
+   * First function to run. Set additional TableTop parameters here if needed.
+   * The callback is referring to the function that should run once the Google Doc
+   * is loaded. In this case, createBarChart()
+   *
+   */
+	window.onload = function() {
+		Tabletop.init( { key: public_spreadsheet_url, callback: createBarChart, simpleSheet: true } );
+	}
+
+  /**
+   * The main function that displays the bar chart. Edit as needed.
+   *
+   * @param {JSON} data The data file in JSON format that is retrived from Google Spreadsheet.
+   */
+	function createBarChart(data){	
+		var total = 0;
+		var values = [];
+		var win = getBrowserWindowWidthHeight();
+		
+		//get the property names from the spreadsheet (column headers)
+		for(var key in data[0]){
+			if(Number(data[0][key]) && key != "rowNumber"){
+				var valueKey = key;
+			}
+			if(!Number(data[0][key]) && key != "rowNumber"){
+				var nameKey = key;
+			}
+		}
+
+		//caculate the total for each item
+		for(var i=0; i < data.length; i++){
+			total += Number(data[i][valueKey]);
+			values.push(data[i][valueKey]);
+		}
+
+		//find max value so bars will be relative to that
+		var max = Math.max.apply(Math, values);
+		
+		//create the bars
+		for(var i=0; i < data.length; i++){
+			var bar = document.createElement('div'); 
+			bar.style.height = Math.floor((win.winH - (5 * (data.length + 1)))/data.length) + 'px';
+			//bar.style.height = '25px';
+			bar.style.width = Number(data[i][valueKey])/max * 100 + "%";
+			bar.style.backgroundColor = 'red';
+			bar.style.margin = '0px';
+			var td1 = document.createElement('td');
+			var td2 = document.createElement('td');
+			var td3 = document.createElement('td');
+			var tr = document.createElement('tr');
+			td1.insertBefore(bar);
+			if(Math.round(Number(data[i][valueKey])/total * 100) < 1){
+				td2.innerHTML = '< 1%';
+			} else {
+				td2.innerHTML = String(Math.round(Number(data[i][valueKey])/total * 100) + "%");
+			}
+			td3.innerHTML = data[i][nameKey];
+			document.body.children[0].insertBefore(tr);
+			document.body.children[0].children[i].insertBefore(td1);
+			document.body.children[0].children[i].insertBefore(td2);
+			document.body.children[0].children[i].insertBefore(td3);
+		}
+	}
+	
+	/**
+   * A safe cross-browser compatible funton that retrieves the browser dimensions.
+   *
+   * @return {object} .winW window width
+   * @return {object} .winH window height
+   */
+	function getBrowserWindowWidthHeight(){
+		var browser = new Object();
+		browser.winW = 630, browser.winH = 460;//very old browsers
+		
+		if (document.body && document.body.offsetWidth) { //for ie
+		 browser.winW = document.body.offsetWidth;
+		 browser.winH = document.body.offsetHeight;
+		}
+		if (document.compatMode=='CSS1Compat' &&
+		    document.documentElement &&
+		    document.documentElement.offsetWidth ) { //very old ie
+		 browser.winW = document.documentElement.offsetWidth;
+		 browser.winH = document.documentElement.offsetHeight;
+		}
+		if (window.innerWidth && window.innerHeight) { //everyone else
+		 browser.winW = window.innerWidth;
+		 browser.winH = window.innerHeight;
+		}
+		
+		return browser;
+	}
+
+	</script>
+</head>
+<body>
+	<table>
+		
+	</table>
+</body>
+</html>

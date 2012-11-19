@@ -12,5 +12,37 @@ Find the endpoint URL you  wish to use, which should contain your `access_key` a
 
 This sample script calls Tweets from a specific location using Twitter's [search API](https://dev.twitter.com/docs/api/1/get/search). Edit the `processData` function as needed. Currently, it is designed to go through and display tweets, profile images and screen names. There is also a handy `linkify_tweet` method that is attached to String objects, which will link @username words, #hashtags and standard links.
 
+## [TableTop Example](https://github.com/UCB-J-School/Class-Examples/blob/master/tabletop/barchart.html)
+This example demonstrates how to use TableTop.js for retrieving information from Google Spreadsheet in JSON format. In this example, we built a simple bar chart. In order to use this, you need to first create a Google Spreadsheet with two columns, one of them numeric.
+
+Example:
+<table>
+  <thead>
+    <tr>
+      <td>Name</td>
+      <td>Numerical value</td>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>John Doe</td>
+      <td>114325</td>
+    </tr>
+    <tr>
+      <td>Jane Doe</td>
+      <td>894325</td>
+    </tr>
+    <tr>
+      <td>Peter Smith</td>
+      <td>634325</td>
+    </tr>
+    <tr>
+      <td>Sarah Resig</td>
+      <td>133525</td>
+    </tr>
+</table>
+
+Then, click **File** -> **Publish To Web**. Copy the URL and add it to your TableTop script in the `public_spreadsheet_url` variable.
+
 ## Timeline Example
 Forthcoming.
