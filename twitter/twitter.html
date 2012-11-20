@@ -44,7 +44,7 @@
             var tweet = $('<p />').html(data["results"][i]["text"].linkify_tweet());
             
             //append all to DOM
-            $('body').append(
+            $('#container').append(
               $('<div />')
                 .append(profile_image)
                 .append(user_name)
@@ -65,6 +65,8 @@
   </script>
 </head>
 <body>
-  
+  <h1>Tweets within 2 miles of 37.871593, -122.272747</h1>
+  <div id="container">
+  </div>
 </body>
 </html>

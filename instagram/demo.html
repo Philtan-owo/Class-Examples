@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Instagram API Example</title>
+  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+  <script>
+  /**
+   *  This is an example script demonstrating the use of the Instagram API with jQuery.
+   *  To use this, you must first sign up for an Instagram account via iOS or Android, then
+   *  register your application at http://instagram.com/developer/
+   *
+   *  Find the endpoint you wish to use, and set it here. Remember to include your access_token 
+   *  in the query string.
+   *  
+   */
+  
+  //set your instagram endpoint URL here!
+  var endpoint = "https://api.instagram.com/v1/tags/snow/media/recent?client_id=d3211e6511074d7083aba62296def3e5";     
+  var currentphoto = 0;
+  
+  jQuery(document).ready(function($){
+      
+      $.ajax({
+        url        : endpoint,
+        dataType   : 'jsonp',
+        success    : function(data){ processData(data); },
+        error      : function(err){
+                        //spits error code to the console if fails. The conditional protest from old IE browsers
+                        if(window.console && window.console.log)
+                           window.console.log("Error: " + err.statusText);
+                     }
+        });
+
+
+      /**
+       * This is the function that runs after data is loaded from Instagram.
+       * You should write your code to the DOM using .html() or .append() The
+       * html method will replace content, while append will preserve content.
+       *
+       * @param {object} data The JSON data that was retrived.
+       */
+      function processData(data){
+        var title = $('<h1 />').html('Instagram photos tagged #snow');
+        
+        var nextbutton = $('<a />').attr('href', '#')
+                                   .html('Next Image')
+                                   .css({'font':'normal 0.9em/1.5em Helvetica, Arial, sans-serif', 'color':'black', 'display':'block'});
+        
+        //Replace all html with an image tag of the first image.
+        $('body').append(title)
+                 .append($('<img />').attr('src', data["data"][currentphoto]["images"]["low_resolution"]["url"]))
+                 .append(nextbutton);
+        
+        //when you click on this image... do something. You can replace all of this with your own code.
+        $('a').click(function(){  
+          $('img').fadeOut(500, function(){
+            currentphoto++;
+            if(currentphoto == data["data"].length) currentphoto = 0; //if on last image, reset
+            $(this).attr('src', data["data"][currentphoto]["images"]["low_resolution"]["url"]);
+            $(this).load(function(){ //once image loads
+              $(this).fadeIn(500);
+            })
+          })
+        });
+        
+      }
+  });
+  </script>
+</head>
+<body>
+  
+</body>
+</html>
