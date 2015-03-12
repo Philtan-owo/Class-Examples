@@ -62,4 +62,4 @@ Example:
 Then, click **File** -> **Publish To Web**. Copy the URL and add it to your TableTop script in the `public_spreadsheet_url` variable.
 
 ## Timeline Example ([DEMO](http://htmlpreview.github.com/?https://github.com/UCB-J-School/Class-Examples/blob/master/timeline/timeline.html))
-Forthcoming.
+Still forthcoming.
